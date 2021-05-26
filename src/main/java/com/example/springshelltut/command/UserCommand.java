@@ -14,20 +14,18 @@ import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import org.springframework.util.StringUtils;
 
+
 @ShellComponent
 public class UserCommand {
 
+  @Autowired
   ShellHelper shellHelper;
-  InputReader inputReader;
-  UserService userService;
 
   @Autowired
-  public UserCommand(ShellHelper shellHelper,
-      InputReader inputReader, UserService userService) {
-    this.shellHelper = shellHelper;
-    this.inputReader = inputReader;
-    this.userService = userService;
-  }
+  InputReader inputReader;
+
+  @Autowired
+  UserService userService;
 
   @ShellMethod("Create new user with supplied username")
   public void createUser(@ShellOption({"-U", "--username"}) String username) {
@@ -56,7 +54,7 @@ public class UserCommand {
       if (StringUtils.hasText(password)) {
         user.setPassword(password);
       } else {
-        shellHelper.printWarning("Password 'CAN NOT be empty string? Please enter valid value!");
+        shellHelper.printWarning("Password'CAN NOT be empty string? Please enter valid value!");
       }
     } while (user.getPassword() == null);
 
@@ -65,19 +63,19 @@ public class UserCommand {
     options.put("M", Gender.MALE.name());
     options.put("F", Gender.FEMALE.name());
     options.put("D", Gender.DIVERSE.name());
-
     String genderValue = inputReader
         .selectFromList("Gender", "Please enter one of the [] values", options, true, null);
-
     Gender gender = Gender.valueOf(options.get(genderValue.toUpperCase()));
-
     user.setGender(gender);
 
     // 4. Prompt for superuser attribute ------------------------------
     String superuserValue = inputReader
         .promptWithOptions("New user is superuser", "N", Arrays.asList("Y", "N"));
-
-    user.setSuperuser("Y".equals(superuserValue));
+    if ("Y".equals(superuserValue)) {
+      user.setSuperuser(true);
+    } else {
+      user.setSuperuser(false);
+    }
 // Print user's input ----------------------------------------------
     shellHelper.printInfo("\nCreating new user:");
     shellHelper.print("\nUsername: " + user.getUsername());

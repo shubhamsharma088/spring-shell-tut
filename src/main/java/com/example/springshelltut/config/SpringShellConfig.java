@@ -38,7 +38,8 @@ public class SpringShellConfig {
         .highlighter(
             (LineReader reader, String buffer) -> {
               return new AttributedString(
-                  buffer, AttributedStyle.BOLD.foreground(PromptColor.WHITE.toJLineAttributedStyle())
+                  buffer,
+                  AttributedStyle.BOLD.foreground(PromptColor.WHITE.toJLineAttributedStyle())
               );
             }
         ).parser(parser);
@@ -47,6 +48,5 @@ public class SpringShellConfig {
     lineReader.unsetOpt(LineReader.Option.INSERT_TAB);
     return new InputReader(lineReader, shellHelper);
   }
-
 
 }
