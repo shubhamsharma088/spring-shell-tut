@@ -1,6 +1,5 @@
 package com.example.springshelltut.customizer;
 
-import static com.example.springshelltut.customizer.PromptColor.*;
 import static com.example.springshelltut.customizer.PromptColor.valueOf;
 import static org.jline.utils.AttributedStyle.DEFAULT;
 
@@ -23,6 +22,10 @@ public class ShellHelper {
   public String errorColor;
 
   private Terminal terminal;
+
+  public Terminal getTerminal() {
+    return terminal;
+  }
 
   public ShellHelper(Terminal terminal) {
     this.terminal = terminal;

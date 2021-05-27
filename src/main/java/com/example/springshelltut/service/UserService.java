@@ -9,4 +9,6 @@ public interface UserService {
   CliUser create(CliUser user);
 
   CliUser update(CliUser user);
+
+  long updateAll();
 }

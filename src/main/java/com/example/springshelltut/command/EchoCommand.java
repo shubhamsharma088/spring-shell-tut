@@ -1,5 +1,7 @@
 package com.example.springshelltut.command;
 
+import com.example.springshelltut.customizer.ProgressBar;
+import com.example.springshelltut.customizer.ProgressCounter;
 import com.example.springshelltut.customizer.ShellHelper;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
@@ -8,16 +10,17 @@ import org.springframework.shell.standard.ShellOption;
 @ShellComponent
 public class EchoCommand {
 
-  public EchoCommand(ShellHelper shellHelper) {
+  private ProgressCounter progressCounter;
+  private ProgressBar progressBar;
+
+  public EchoCommand(ProgressCounter progressCounter,
+      ProgressBar progressBar, ShellHelper shellHelper) {
+    this.progressCounter = progressCounter;
+    this.progressBar = progressBar;
     this.shellHelper = shellHelper;
   }
 
   private ShellHelper shellHelper;
-
-//  @ShellMethod("Displays greeting message to the user whose name is supplied")
-//  public String echo(@ShellOption({"-N", "--name"}) String name) {
-//    return String.format("Hello %s! You are running spring shell cli-demo.", name);
-//  }
 
 
   @ShellMethod("Displays greeting message to the user whose name is supplied")
@@ -34,4 +37,21 @@ public class EchoCommand {
     return output.concat(" You are running spring shell cli-demo.");
   }
 
+  @ShellMethod("Displays progress counter (with spinner)")
+  public void progressCounter() throws InterruptedException {
+    for (int i = 1; i <= 100; i++) {
+      progressCounter.display(i, "Processing");
+      Thread.sleep(100);
+    }
+    progressCounter.reset();
+  }
+
+  @ShellMethod("Displays progress bar")
+  public void progressBar() throws InterruptedException {
+    for (int i = 1; i <= 100; i++) {
+      progressBar.display(i);
+      Thread.sleep(100);
+    }
+    progressBar.reset();
+  }
 }

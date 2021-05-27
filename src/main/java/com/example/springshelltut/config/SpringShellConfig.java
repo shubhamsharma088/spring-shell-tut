@@ -1,6 +1,8 @@
 package com.example.springshelltut.config;
 
 import com.example.springshelltut.customizer.InputReader;
+import com.example.springshelltut.customizer.ProgressBar;
+import com.example.springshelltut.customizer.ProgressCounter;
 import com.example.springshelltut.customizer.PromptColor;
 import com.example.springshelltut.customizer.ShellHelper;
 import org.jline.reader.History;
@@ -47,6 +49,17 @@ public class SpringShellConfig {
     LineReader lineReader = lineReaderBuilder.build();
     lineReader.unsetOpt(LineReader.Option.INSERT_TAB);
     return new InputReader(lineReader, shellHelper);
+  }
+
+
+  @Bean
+  public ProgressCounter progressCounter(@Lazy Terminal terminal) {
+    return new ProgressCounter(terminal);
+  }
+
+  @Bean
+  public ProgressBar progressBar(ShellHelper shellHelper) {
+    return new ProgressBar(shellHelper);
   }
 
 }
